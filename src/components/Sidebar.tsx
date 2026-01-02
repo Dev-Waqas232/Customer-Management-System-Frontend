@@ -6,7 +6,8 @@ import {
 } from "react-icons/md";
 import { FaBattleNet } from "react-icons/fa6";
 import { IoHomeOutline } from "react-icons/io5";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const LINKS = [
   {
@@ -32,6 +33,14 @@ const LINKS = [
 ];
 
 export default function Sidebar() {
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    logout();
+    navigate("/login");
+  }
+
   return (
     <section className="flex flex-col justify-between bg-linear-to-b from-teal-500 to-teal-800 h-screen py-8 px-6">
       <div>
@@ -64,7 +73,10 @@ export default function Sidebar() {
         </ul>
       </div>
       <div>
-        <button className="w-full bg-white rounded-md py-3 flex items-center justify-center gap-3 text-lg cursor-pointer font-heading hover:bg-gray-200 font-medium transition-all hover:scale-95 text-teal-700">
+        <button
+          onClick={handleLogout}
+          className="w-full bg-white rounded-md py-3 flex items-center justify-center gap-3 text-lg cursor-pointer font-heading hover:bg-gray-200 font-medium transition-all hover:scale-95 text-teal-700"
+        >
           <MdLogout size={24} />
           <span>Logout</span>
         </button>

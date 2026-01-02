@@ -1,6 +1,8 @@
 import { useState, type FormEvent } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { isValidEmail, isValidPassword } from "../utils/input-validators";
+import { login } from "../services/auth";
+import { useAuth } from "../context/AuthContext";
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -9,6 +11,8 @@ export default function Login() {
     password: string | null;
   }>({ email: null, password: null });
   const [loading, setLoading] = useState(false);
+  const { login: localLogin } = useAuth();
+  const naviagate = useNavigate();
 
   function setError(field: string, message: string | null) {
     setErrors((prev) => {
@@ -48,7 +52,11 @@ export default function Login() {
 
     try {
       setLoading(true);
-      await new Promise((resolve) => setTimeout(resolve, 3000));
+
+      const token = await login(formData);
+      localLogin(token as string);
+
+      naviagate("/");
     } catch (error) {
       console.log(error);
     } finally {

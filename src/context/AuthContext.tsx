@@ -10,7 +10,7 @@ const AuthContext = createContext({} as AuthContextProps);
 
 export default function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(
-    JSON.parse(localStorage.getItem("token") as string) ? true : false
+    localStorage.getItem("token") ? true : false
   );
 
   function login(token: string) {
